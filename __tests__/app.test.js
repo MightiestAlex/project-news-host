@@ -20,10 +20,9 @@ describe('server.js', ()=> {
                         .expect(200)
                         .then((res)=>{
                             let { topics } = res.body
-
                             expect(topics).toHaveLength(3)
                              topics.forEach((element)=>{console.log(element)
-                                expect(element).toMatchObject({
+                                return expect(element).toMatchObject({
                                     slug: expect.any(String),
                                     description: expect.any(String)
                                 })
