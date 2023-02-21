@@ -6,7 +6,8 @@ What you will need to use this repo:
    env.development
     : To set a process environment variable for the databases
     
-   CLI example: 
+   CLI example:
+   
    echo'PGDATABASE=database_test'>env.test
    
    echo 'PGDATABASE=database_news'>env.development
