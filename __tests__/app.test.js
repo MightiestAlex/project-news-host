@@ -19,7 +19,7 @@ describe('server.js', ()=> {
                         .get('/api/topics')
                         .expect(200)
                         .then((res)=>{
-                            let { topics } = res.body
+                            let { topics } = res.body                        
                             expect(topics).toHaveLength(3)
                              topics.forEach((element)=>{
                                 return expect(element).toMatchObject({
@@ -30,6 +30,10 @@ describe('server.js', ()=> {
                         })
                 })
             })
+        })
+
+        describe('/articles', ()=>{
+            test('200, returns an array of articles with key ')
         })
     })
 })

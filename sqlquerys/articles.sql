@@ -10,14 +10,18 @@ CREATE TABLE comment_counter;
 --GROUP BY author 
 --HAVING COUNT(author) > 1
 
-SELECT author, COUNT(author) AS comment_count
+
+
+SELECT author, title, article_id, topic, created_at, votes, article_img_url
 FROM articles
-GROUP BY author 
-HAVING COUNT(author) > 1
+ORDER BY article_id DESC;
 
-FULL OUTER JOIN articles
+SELECT MAX(article_id) AS number_of_articles
+FROM    articles;
 
-;
+--FULL OUTER JOIN articles
+
+
 
 
 

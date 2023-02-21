@@ -2,7 +2,7 @@ const db = require('../db/connection.js')
 
 module.exports = {
 
-    topicsArray: function(){
+    allTopics: function(){
         return db.query(`
             SELECT slug, description
             FROM topics
