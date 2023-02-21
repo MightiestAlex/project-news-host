@@ -14,7 +14,7 @@ describe('server.js', ()=> {
         describe('/topics', ()=>{
 
             describe('GET', ()=>{
-                test('returns an array of objects from table topics', ()=>{
+                test('200: returns an array of objects from table topics', ()=>{
                     return request(app)
                         .get('/api/topics')
                         .expect(200)
