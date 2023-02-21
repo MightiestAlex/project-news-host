@@ -1,5 +1,4 @@
 module.exports = {
-
     handleStatus400: function(err, req, res, next) {
 
         if (err.status === 400) {

@@ -4,9 +4,8 @@ module.exports = {
 
    getArticles: function(request, response, next) {
         allArticles().then((array)=>{
-            console.log(array)
             response.status(200).send({articles: array})
-        })
+        }).catch(next)
    }
 };
 
