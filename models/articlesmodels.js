@@ -3,7 +3,6 @@ const db = require('../db/connection.js');
 module.exports = {
 
     allArticles: function(){
-//ARRRRRRRRRRGHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH!
         return db.query(
             `SELECT articles.*, COUNT(comments.article_id)::INT AS comment_count 
             FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id
