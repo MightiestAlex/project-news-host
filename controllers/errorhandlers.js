@@ -1,6 +1,5 @@
 module.exports = {
-
-    statusCode400: function(err, req, res, next) {
+    handleStatus400: function(err, req, res, next) {
 
         if (err.status === 400) {
           res.status(400).send({msg : err.msg});
@@ -9,8 +8,8 @@ module.exports = {
         }
       },
   
-    statusCode500: function(err, req, res, next){
+    handleStatus500: function(err, req, res, next){
           console.log(err)
-          res.sendStatus(500);      
+          res.status(500).send({message: "Internal server error"})     
       }
 }
