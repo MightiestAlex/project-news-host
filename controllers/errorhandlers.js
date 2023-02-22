@@ -10,6 +10,6 @@ module.exports = {
   
     handleStatus500: function(err, req, res, next){
           console.log(err)
-          res.sendStatus(500);      
+          res.status(500).send({message: "Internal server error"})     
       }
 }
