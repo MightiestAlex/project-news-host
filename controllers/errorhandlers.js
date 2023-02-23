@@ -1,17 +1,14 @@
 module.exports = {
-
     handlePSQLerrors(err, req, res, next) {  
-
+//psql errors
       if(err.code){
        let error_response = {
           '22P02': [400, {'msg': 'Invalid article id‽'}]
         }[err.code]
         res.status(error_response[0]).send(error_response[1]);
       }
-
-      if (err.msg === 'Article not found check article_id.'){
-       res.status(404).send(err)
-      }
+//human errors
+      if (err.msg === 'Article not found check article_id.'){res.status(404).send(err)}
 
       next(err)
     },
