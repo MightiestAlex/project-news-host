@@ -96,7 +96,7 @@ describe('server.js', ()=> {
                     })
                 })
             })
-            describe.only('GET/articles/:articles/comments', ()=>{
+            describe('GET/articles/:articles/comments', ()=>{
                 test('200, Returns a comment array with the correct elements and keys',()=>{
                     return request(app)
                     .get('/api/articles/1/comments')
@@ -125,7 +125,7 @@ describe('server.js', ()=> {
                         expect(comments).toEqual([])
                     })
                 })
-                test('404, Returns an error if the request paramater is invalid', ()=>{
+                test('400, Returns an error if the request paramater is invalid', ()=>{
                     return request(app)
                     .get('/api/articles/13a/comments')
                     .expect(400)
@@ -133,6 +133,48 @@ describe('server.js', ()=> {
                 test('404, Returns an error when article does not exist', ()=>{
                     return request(app)
                     .get('/api/articles/13/comments')
+                    .expect(404)
+                })
+            })
+        })
+        describe('/comments', ()=>{
+            describe('POST/api/articles/:article_id/comments', ()=>{
+                test('201, Correct comment has been added', ()=>{
+                    return request(app)
+                        .post('/api/articles/11/comments')
+                        .send(    
+                            {
+                            "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                            "username": "icellusedkars"
+                            }
+                        )
+                        .expect(201)
+                        .then((response)=>{
+                            const {author, body} = response.body.post
+                            expect(author).toBe('icellusedkars')
+                            expect(body).toBe('Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.')
+                        })
+                })
+                test('400, Returns an error if the request paramater is invalid', ()=>{
+                    return request(app)
+                    .post('/api/articles/a/comments')
+                    .send(    
+                        {
+                        "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                        "username": "icellusedkars"
+                        }
+                    )
+                    .expect(400)
+                })    
+                test('404, Returns an error when article does not exist', ()=>{
+                    return request(app)
+                    .get('/api/articles/13/comments')
+                    .send(    
+                        {
+                        "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                        "username": "icellusedkars"
+                        }
+                    )
                     .expect(404)
                 })
             })

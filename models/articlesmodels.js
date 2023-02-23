@@ -14,7 +14,7 @@ module.exports = {
         })
     },
 
-    articleFromArticle_id: function(article_id){
+    articleFromArticle_id: function(article_id, METHOD){
         return db.query(
             `SELECT *
             FROM articles
@@ -39,17 +39,4 @@ module.exports = {
             return comments.rows
         })
     },
-
-
-    insertsComment: function(article_id, body){
-        return db.query(
-            `INSERT INTO comments
-            (article_id, body)
-            VALUES ($1 $2)
-            RETURNING *;`, [article_id, body]
-        )
-        .then((dbResponse)=>{
-             console.log(dbResponse)
-        })
-    }
 };
