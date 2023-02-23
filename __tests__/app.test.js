@@ -14,18 +14,18 @@ describe('server.js', ()=> {
             describe('GET/topics', ()=>{
                 test('200: returns array of objects from SQL: table topics', ()=>{
                     return request(app)
-                        .get('/api/topics')
-                        .expect(200)
-                        .then((response)=>{
-                            const { topics } = response.body                        
-                            expect(topics).toHaveLength(3)
-                             topics.forEach((element)=>{
-                                return expect(element).toMatchObject({
-                                        slug: expect.any(String),
-                                        description: expect.any(String)
-                                })
-                            })    
-                        })
+                    .get('/api/topics')
+                    .expect(200)
+                    .then((response)=>{
+                        const { topics } = response.body                        
+                        expect(topics).toHaveLength(3)
+                            topics.forEach((element)=>{
+                            return expect(element).toMatchObject({
+                                    slug: expect.any(String),
+                                    description: expect.any(String)
+                            })
+                        })    
+                    })
                 })
             })
         })
@@ -37,7 +37,8 @@ describe('server.js', ()=> {
                     .get('/api/articles')
                     .expect(200)
                     .then((response)=>{
-                        const { articles } = response.body
+                        const { articles } = response.body;
+                        
                         expect(articles).toHaveLength(12)
                         articles.forEach((element)=>{
                                 expect(element).toMatchObject({
@@ -54,9 +55,45 @@ describe('server.js', ()=> {
                                 descending: true,
                                 key: 'created_at'
                             })
-
                         })
                     })                 
+                })
+            })
+            describe('GET/articles/:articles', ()=>{
+                test('200, returns correct article object from SQL when passed an article_id', ()=>{
+                    return request(app)
+                    .get('/api/articles/1')
+                    .expect(200)
+                    .then((response)=>{
+                        const { article } = response.body;
+
+                        expect(article.article_id).toBe(1)   
+                        expect(article).toMatchObject({
+                        article_id: 1,
+                        author:'butter_bridge',
+                        title: 'Living in the shadow of a great man',
+                        topic: 'mitch',
+                        created_at: "2020-07-09T20:11:00.000Z",
+                        votes: 100,
+                        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                        })                    
+                    })
+                })
+                test('400, Returns error if the request parameter is invalid', ()=>{
+                    return request(app)
+                    .get('/api/articles/a')
+                    .expect(400)
+                    .then((response)=>{
+                        expect(response.body.msg).toBe('Invalid article id‽')
+                    })
+                })
+                test('400, Returns error if the request paramaeter is correctly formatted yet no article exists', ()=>{
+                    return request(app)
+                    .get('/api/articles/14')
+                    .expect(404)
+                    .then((response)=>{
+                        expect(response.body.msg).toBe('Article not found check article_id.')
+                    })
                 })
             })
         })
