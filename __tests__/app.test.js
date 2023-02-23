@@ -96,7 +96,7 @@ describe('server.js', ()=> {
                     })
                 })
             })
-            describe.only('GET/articles/:articles/comments', ()=>{
+            describe('GET/articles/:articles/comments', ()=>{
                 test('200, Returns a comment array with the correct elements and keys',()=>{
                     return request(app)
                     .get('/api/articles/1/comments')
@@ -135,6 +135,30 @@ describe('server.js', ()=> {
                     .get('/api/articles/13/comments')
                     .expect(404)
                 })
+            })
+            describe('PATCH/articles/:articles_id', ()=>{
+                test('Returns correctly patched object', ()=>{
+                    return request(app)
+                    .patch('/api/articles/1/')
+                    .send({"inc_votes":140})
+                    .expect(200)
+                    .then((response)=>{
+                        const {article} = response.body
+                        expect(article.votes).toBe(240)
+                        expect(article).toMatchObject({       
+                            article_id: 1,
+                            title: "Living in the shadow of a great man",
+                            topic: "mitch",
+                            author: "butter_bridge",
+                            body: "I find this existence challenging",
+                            created_at: "2020-07-09T20:11:00.000Z",
+                            votes: 240,
+                            article_img_url: "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"                          
+                        })                      
+                    })                   
+                })
+                //when sent to an article that does not exist need error handling 
+                //when sent undefined NAN/ Null vote count 
             })
         })
     })

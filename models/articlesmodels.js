@@ -15,8 +15,8 @@ module.exports = {
     },
 
     articleFromArticle_id: function(article_id){
-        return db.query(
-            `SELECT *
+        return db.query(`
+            SELECT *
             FROM articles
             WHERE articles.article_id = $1;`, [article_id]
         )
@@ -29,15 +29,26 @@ module.exports = {
     },
 
     allArticleComments: function(article_id) {
-        console.log('here2')
-        return db.query(
-            `SELECT *
+        return db.query(`
+            SELECT *
             FROM comments
             WHERE article_id = $1
             ORDER BY created_at DESC;`, [article_id]
         )
         .then((comments)=>{
             return comments.rows
+        })
+    },
+
+    patchVotes: function(article_id, inc_votes) {
+        return db.query(`
+            UPDATE articles
+            SET votes = votes + $1
+            WHERE article_id = $2
+            RETURNING *;`, [inc_votes, article_id]
+        )
+        .then((object)=>{
+            return object.rows[0]
         })
     }
 };
