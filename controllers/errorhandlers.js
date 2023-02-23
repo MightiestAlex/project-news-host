@@ -10,7 +10,7 @@ module.exports = {
       }
 
       if (err.msg === 'Article not found check article_id.'){
-       res.status(400).send(err)
+       res.status(404).send(err)
       }
 
       next(err)
