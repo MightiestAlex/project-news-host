@@ -29,7 +29,6 @@ module.exports = {
     },
 
         allArticleComments: function(article_id) {
-        console.log('here2')
         return db.query(
             `SELECT *
             FROM comments

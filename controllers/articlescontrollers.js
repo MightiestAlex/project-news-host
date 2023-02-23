@@ -17,12 +17,10 @@ module.exports = {
 
    getArticleComments: function(request, response, next) {
     const { articles } = request.params;
-    console.log('here')
 
     //chain checks if article exists then returns linked comments
     articleFromArticle_id(articles)
     .then(()=>{
-        console.log(articles)
         return allArticleComments(articles)
     })
     .then((array)=>{
