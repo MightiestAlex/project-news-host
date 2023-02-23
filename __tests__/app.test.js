@@ -42,16 +42,16 @@ describe('server.js', ()=> {
                         expect(articles).toHaveLength(12)
                         articles.forEach((element)=>{
                                 expect(element).toMatchObject({
-                                article_id: expect.any(Number),
-                                author: expect.any(String),
-                                title: expect.any(String),
-                                topic: expect.any(String),
-                                created_at: expect.any(String),
-                                votes: expect.any(Number),
-                                comment_count: expect.any(Number),
-                                article_img_url: expect.any(String)
-                            })
-                            expect(articles).toBeSorted({
+                                    article_id: expect.any(Number),
+                                    author: expect.any(String),
+                                    title: expect.any(String),
+                                    topic: expect.any(String),
+                                    created_at: expect.any(String),
+                                    votes: expect.any(Number),
+                                    comment_count: expect.any(Number),
+                                    article_img_url: expect.any(String)
+                                })
+                                expect(articles).toBeSorted({
                                 descending: true,
                                 key: 'created_at'
                             })
@@ -69,13 +69,13 @@ describe('server.js', ()=> {
 
                         expect(article.article_id).toBe(1)   
                         expect(article).toMatchObject({
-                        article_id: 1,
-                        author:'butter_bridge',
-                        title: 'Living in the shadow of a great man',
-                        topic: 'mitch',
-                        created_at: "2020-07-09T20:11:00.000Z",
-                        votes: 100,
-                        article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
+                            article_id: 1,
+                            author:'butter_bridge',
+                            title: 'Living in the shadow of a great man',
+                            topic: 'mitch',
+                            created_at: "2020-07-09T20:11:00.000Z",
+                            votes: 100,
+                            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700',
                         })                    
                     })
                 })
@@ -87,13 +87,53 @@ describe('server.js', ()=> {
                         expect(response.body.msg).toBe('Invalid article id‽')
                     })
                 })
-                test('400, Returns error if the request paramaeter is correctly formatted yet no article exists', ()=>{
+                test('404, Returns error if the request paramaeter is correctly formatted yet no article exists', ()=>{
                     return request(app)
                     .get('/api/articles/14')
                     .expect(404)
                     .then((response)=>{
                         expect(response.body.msg).toBe('Article not found check article_id.')
                     })
+                })
+            })
+            describe.only('GET/articles/:articles/comments', ()=>{
+                test('200, Returns a comment array with the correct elements and keys',()=>{
+                    return request(app)
+                    .get('/api/articles/1/comments')
+                    .expect(200)
+                    .then((response)=>{
+                        const { comments } = response.body
+                        expect(comments).toHaveLength(11)         
+                        comments.forEach((element)=>{
+                            expect(element).toMatchObject({
+                                comment_id: expect.any(Number),
+                                body: expect.any(String),
+                                article_id: expect.any(Number),
+                                author: expect.any(String),
+                                votes: expect.any(Number),
+                                created_at: expect.any(String)
+                            })
+                        })
+                    })
+                })
+                test('200, Returns an empty array when article has no comments', ()=>{
+                    return request(app)
+                    .get('/api/articles/12/comments')
+                    .expect(200)
+                    .then((response)=>{
+                        const { comments } = response.body
+                        expect(comments).toEqual([])
+                    })
+                })
+                test('404, Returns an error if the request paramater is invalid', ()=>{
+                    return request(app)
+                    .get('/api/articles/13a/comments')
+                    .expect(400)
+                })    
+                test('404, Returns an error when article does not exist', ()=>{
+                    return request(app)
+                    .get('/api/articles/13/comments')
+                    .expect(404)
                 })
             })
         })
