@@ -9,7 +9,8 @@
     "testseed": "node ./db/seeds/run-seed-test.js",
     "test": "jest",
     "prepare": "husky install",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "x": "psql -f ./db/setup.sql && node ./db/seeds/run-seed-test.js && nodemon server.js"
   },
   "repository": {
     "type": "git",

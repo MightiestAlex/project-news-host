@@ -26,5 +26,17 @@ module.exports = {
             }
             return article.rows[0]
         })
+    },
+
+    insertsComment: function(article_id, body){
+        return db.query(
+            `INSERT INTO comments
+            (article_id, body)
+            VALUES ($1 $2)
+            RETURNING *;`, [article_id, body]
+        )
+        .then((dbResponse)=>{
+             console.log(dbResponse)
+        })
     }
 };
