@@ -7,8 +7,8 @@ module.exports = {
         const {username, body} = request.body
 
         //filters undefined keys
-        if(username === undefined || body === undefined){
-            next({msg: 'Missing username or text. please check your comment.'});
+        if(!username || !body){
+            next({msg: 'Missing username and/or text: please check your comment.'});
         }
         //checks that article exists
         articleFromArticle_id(article_id)

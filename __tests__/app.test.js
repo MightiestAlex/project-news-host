@@ -157,8 +157,52 @@ describe('server.js', ()=> {
                         })                      
                     })                   
                 })
-                //when sent to an article that does not exist need error handling 
-                //when sent undefined NAN/ Null vote count 
+                test('400, Returns an error if the request paramater is invalid', ()=>{
+                    return request(app)
+                    .patch('/api/articles/13a/')
+                    .send({"inc_votes":140})
+                    .expect(400)
+                })    
+                test('404, Returns an error when article does not exist', ()=>{
+                    return request(app)
+                    .patch('/api/articles/13/')
+                    .send({"inc_votes":140})
+                    .expect(404)
+                })
+                test('200, ignores supurfluous properties', ()=>{
+                    return request(app)
+                    .patch('/api/articles/1/')
+                    .send({
+                        "inc_votes":140,
+                        "goblins": 2,
+                    })
+                    .expect(200)
+                    .then((response)=>{
+                        const {article} = response.body
+                        expect(article).toMatchObject({       
+                            article_id: 1,
+                            title: "Living in the shadow of a great man",
+                            topic: "mitch",
+                            author: "butter_bridge",
+                            body: "I find this existence challenging",
+                            created_at: "2020-07-09T20:11:00.000Z",
+                            votes: 240,
+                            article_img_url: "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"                          
+                        })                      
+                    })
+                })
+                test('400, inc_votes key is undefined', ()=>{
+                    return request(app)
+                    .patch('/api/articles/1/')
+                    .send({"NotanExpectedKey":140})
+                    .expect(400)
+                })
+                test('400, inc_votes property is not a number', ()=>{
+                    return request(app)
+                    .patch('/api/articles/1/')
+                    .send({"inc_votes":"stringly"})
+                    .expect(400)
+                } )
             })
         })
         describe('/comments', ()=>{
@@ -214,13 +258,12 @@ describe('server.js', ()=> {
                         })
                     .expect(404)
                 })
-                test('400, username or body property not on post body', ()=>{
+                test('400, username and/or body property not on post body', ()=>{
                     return request(app)
                     .post('/api/articles/11/comments')
                     .send(    
-                        {
-                        "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works."
-                        })
+                        {}
+                        )
                     .expect(400)
                 })
                 test('404, username does not exist', ()=>{
