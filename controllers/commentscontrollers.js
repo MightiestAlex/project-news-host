@@ -8,7 +8,7 @@ module.exports = {
 
         //filters undefined keys
         if(!username || !body){
-            next({msg: 'Missing username and/or text: please check your comment.'});
+            next({status: 400, msg: 'Missing username and/or text: please check your comment.'});
         }
         //checks that article exists
         articleFromArticle_id(article_id)

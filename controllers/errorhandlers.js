@@ -9,13 +9,9 @@ module.exports = {
         res.status(error_response[0]).send(error_response[1]);
       }
 //human errors
-      //missing or invalid votes key/property
-      if(err.msg === 'Missing votes property: please check input')(res.status(400).send(err))
-      if(err.msg === 'Invalid votes property'){req.status(400).send(err)};
-      //posting commment with missing keys
-      if (err.msg === 'Missing username and/or text: please check your comment.'){res.status(400).send(err)}
-      //missing article id
-      if (err.msg === 'Article not found check article_id.'){res.status(404).send(err)}
+      if(err.msg && err.status){
+        res.status(err.status).send({msg: err.msg})
+      }
       next(err)
     },
 
@@ -28,7 +24,7 @@ module.exports = {
       },
   
     handleStatus500: function(err, req, res, next){
-          res.status(500).send({message: "Internal server error"})     
+        res.status(500).send({message: "No server for you."})     
       }
 }
 

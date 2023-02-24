@@ -12,6 +12,7 @@ app.use(handlePSQLerrors);
 app.use(handleStatus400);
 app.use(handleStatus500);
 
+
 //app.listen(9092, () => console.log('App listening on port 9092!'));
 
 module.exports = app; 

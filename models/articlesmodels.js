@@ -22,7 +22,7 @@ module.exports = {
         )
         .then((article)=>{  
             if(article.rows.length === 0){
-                return Promise.reject({msg: 'Article not found check article_id.'})
+                return Promise.reject({status: 404, msg: 'Article not found check article_id.'})
             }
             return article.rows[0]
         })
