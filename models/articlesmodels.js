@@ -14,7 +14,7 @@ module.exports = {
         })
     },
 
-    articleFromArticle_id: function(article_id){
+    articleFromArticle_id: function(article_id, METHOD){
         return db.query(
             `SELECT *
             FROM articles
@@ -28,8 +28,7 @@ module.exports = {
         })
     },
 
-    allArticleComments: function(article_id) {
-        console.log('here2')
+        allArticleComments: function(article_id) {
         return db.query(
             `SELECT *
             FROM comments
@@ -39,5 +38,5 @@ module.exports = {
         .then((comments)=>{
             return comments.rows
         })
-    }
+    },
 };
