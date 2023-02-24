@@ -1,6 +1,25 @@
 module.exports = {
-    handleStatus400: function(err, req, res, next) {
+    handlePSQLerrors(err, req, res, next) {  
+//psql errors
+      if(err.code){
+       let error_response = {
+          '22P02': [400, {'msg': 'Invalid article id‽'}],
+          '23503': [404, {'msg': 'Invalid username'}]
+        }[err.code]
+        res.status(error_response[0]).send(error_response[1]);
+      }
+//human errors
+      //missing or invalid votes key/property
+      if(err.msg === 'Missing votes property: please check input')(res.status(400).send(err))
+      if(err.msg === 'Invalid votes property'){req.status(400).send(err)};
+      //posting commment with missing keys
+      if (err.msg === 'Missing username and/or text: please check your comment.'){res.status(400).send(err)}
+      //missing article id
+      if (err.msg === 'Article not found check article_id.'){res.status(404).send(err)}
+      next(err)
+    },
 
+    handleStatus400: function(err, req, res, next) {
         if (err.status === 400) {
           res.status(400).send({msg : err.msg});
         } else {
@@ -9,7 +28,7 @@ module.exports = {
       },
   
     handleStatus500: function(err, req, res, next){
-          console.log(err)
           res.status(500).send({message: "Internal server error"})     
       }
 }
+
