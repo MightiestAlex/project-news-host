@@ -2,6 +2,7 @@
 const db = require('../db/connection.js')
 
 module.exports = {
+
     insertsComment: function(article_id, username, body){
         return db.query(
             `INSERT INTO comments

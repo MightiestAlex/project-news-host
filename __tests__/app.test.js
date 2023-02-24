@@ -142,12 +142,10 @@ describe('server.js', ()=> {
                 test('201, Correct comment has been added', ()=>{
                     return request(app)
                         .post('/api/articles/11/comments')
-                        .send(    
-                            {
+                        .send({
                             "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
                             "username": "icellusedkars"
-                            }
-                        )
+                            })
                         .expect(201)
                         .then((response)=>{
                             const {author, body} = response.body.post
@@ -155,27 +153,64 @@ describe('server.js', ()=> {
                             expect(body).toBe('Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.')
                         })
                 })
-                test('400, Returns an error if the request paramater is invalid', ()=>{
+                test('201, Ignores unecessary properties', ()=>{
+                    return request(app)
+                    .post('/api/articles/11/comments')
+                    .send({
+                        "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                        "username": "icellusedkars",
+                        "goblins": 2
+                        })
+                    .expect(201)
+                    .then((response)=>{
+                        expect(response.body.post).toEqual(
+                        {
+                        "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                        "author": "icellusedkars"
+                        })
+                    }) 
+                })
+                test('400, request paramater is invalid', ()=>{
                     return request(app)
                     .post('/api/articles/a/comments')
                     .send(    
                         {
                         "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
                         "username": "icellusedkars"
-                        }
-                    )
+                        })
                     .expect(400)
                 })    
-                test('404, Returns an error when article does not exist', ()=>{
+                test('404, article does not exist', ()=>{
                     return request(app)
-                    .get('/api/articles/13/comments')
+                    .post('/api/articles/13/comments')
                     .send(    
                         {
                         "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
                         "username": "icellusedkars"
-                        }
-                    )
+                        })
                     .expect(404)
+                })
+                test('400, username or body property not on post body', ()=>{
+                    return request(app)
+                    .post('/api/articles/11/comments')
+                    .send(    
+                        {
+                        "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works."
+                        })
+                    .expect(400)
+                })
+                test('404, username does not exist', ()=>{
+                    return request(app)
+                    .post('/api/articles/11/comments')
+                    .send(    
+                        {
+                        "body": "Replacing the quiet elegance of the dark suit and tie with the casual indifference of these muted earth tones is a form of fashion suicide, but, uh, call me crazy — onyou it works.",
+                        "username": "MightyAlex"
+                        })
+                    .expect(404)
+                    .then((response)=>{
+                        expect(response.body.msg).toBe('Invalid username')
+                    })
                 })
             })
         })
