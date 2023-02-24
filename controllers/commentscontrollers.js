@@ -6,6 +6,10 @@ module.exports = {
         const {article_id} = request.params;
         const {username, body} = request.body
 
+        //filters undefined keys
+        if(username === undefined || body === undefined){
+            next({msg: 'Missing username or text. please check your comment.'});
+        }
         //checks that article exists
         articleFromArticle_id(article_id)
         .then(()=>{return insertsComment(article_id, username, body)})

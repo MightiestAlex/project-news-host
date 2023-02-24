@@ -22,7 +22,6 @@ module.exports = {
     //chain checks if article exists then returns linked comments
     articleFromArticle_id(articles)
     .then(()=>{
-        console.log(articles)
         return allArticleComments(articles)
     })
     .then((object)=>{
