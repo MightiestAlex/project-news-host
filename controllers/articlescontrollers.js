@@ -33,8 +33,8 @@ module.exports = {
     const {article_id} = request.params
     const {inc_votes} = request.body
 
-    if(!inc_votes){next({msg: 'Missing votes property: please check input'})}
-    if(!typeof(inc_votes)=== Number){next({msg: 'Invalid votes property'})}
+    if(!inc_votes){next({status: 400, msg: 'Missing votes property: please check input'})}
+    if(!typeof(inc_votes)=== Number){next({status: 400, msg: 'Invalid votes property'})}
   
     articleFromArticle_id(article_id)
     .then(()=>{
