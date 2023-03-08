@@ -1,9 +1,13 @@
-const {allArticles, articleFromArticle_id, allArticleComments, patchVotes} = require('../models/articlesmodels.js');
+const {queryArticles, articleFromArticle_id, allArticleComments, patchVotes} = require('../models/articlesmodels.js');
 
 module.exports = {
 
    getArticles: function(request, response, next) {
-        allArticles().then((array)=>{
+    
+        const {topics, sort_by, order} = request.query
+        
+
+        queryArticles(topics, sort_by, order).then((array)=>{
             response.status(200).send({articles: array})
         }).catch(next)
    },

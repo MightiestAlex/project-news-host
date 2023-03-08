@@ -4,6 +4,7 @@ const {postComment} = require('../controllers/commentscontrollers.js');
 
 articlesRouter.patch('/:article_id/', patchArticleVotes);
 articlesRouter.post('/:article_id/comments', postComment);
+
 articlesRouter.get('/:articles/comments', getArticleComments)
 articlesRouter.get('/:articles', getArticle);
 articlesRouter.get('/', getArticles);
