@@ -1,6 +1,7 @@
 module.exports = {
     handlePSQLerrors(err, req, res, next) {  
 //psql errors
+      console.log(err)
       if(err.code){
        let error_response = {
           '22P02': [400, {'msg': 'Invalid article id‽'}],
