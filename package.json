@@ -12,7 +12,7 @@
     "test": "jest",
     "prepare": "husky install",
     "dev": "nodemon server.js",
-    "x": "psql -f ./db/setup.sql && node ./db/seeds/run-seed-test.js && nodemon server.js"
+    "x": "psql -f ./db/setup.sql && node ./db/seeds/run-seed-test.js && node listen.js"
   },
   "repository": {
     "type": "git",
